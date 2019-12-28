@@ -1,8 +1,8 @@
-async function fetchAnimals(amount = 10) {
+async function fetchAnimals(type, amount) {
   if (amount === 0) {
     return [];
   }
-  const res = await fetch(`/api/animals?count=${amount}`);
+  const res = await fetch(`/api/${type}?count=${amount}`);
   return res.json();
 }
 

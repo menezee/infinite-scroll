@@ -4,9 +4,10 @@ const app = express();
 
 const port = process.env.PORT || 5000;
 
-app.get('/api/animals', (req, res) => {
+app.get('/api/:type', (req, res) => {
   const { count } = req.query;
-  const BASE_URL = `http://shibe.online/api/shibes?count=${count}`;
+  const { type } = req.params;
+  const BASE_URL = `http://shibe.online/api/${type}?count=${count}`;
 
   http.get(BASE_URL, (resp) => {
     let data = '';
