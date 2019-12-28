@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const app = express();
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.get('/api/animals', (req, res) => {
   const { count } = req.query;
@@ -24,5 +24,7 @@ app.get('/api/animals', (req, res) => {
     });
 
 });
+
+app.use(express.static('build'));
 
 app.listen(port, () => console.log(`proxy listening on port ${port}!`));
