@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "infinite scroll",
+  "name": "a nice infinite scroll for all sorts of animals",
   "icons": [
     {
       "src": "favicon.ico",
