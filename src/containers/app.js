@@ -5,13 +5,13 @@ import { AnimalCard, AnimalCounter, Dropdown } from '../components';
 
 function App() {
   const [state, dispatch] = useAnimalsReducer();
-  const { selected } = state;
-  const { amountToLoad, list } = state[selected]
+  const { selected, loading } = state;
+  const { amountToLoad, list } = state[selected];
 
   const containerRef = useRef(null);
 
   const memoedHandleScrollPositionChange = useCallback(() => {
-    if (hasReachedBottom(containerRef)) {
+    if (hasReachedBottom(containerRef) && loading === false) {
       dispatch({
         type: TYPES.UPDATE_AMOUNT,
         payload: {

@@ -5,10 +5,12 @@ const TYPES = {
   UPDATE_AMOUNT: 'UPDATE_AMOUNT',
   UPDATE_LIST: 'UPDATE_LIST',
   SELECTED: 'SELECTED',
+  LOADING: 'LOADING',
 };
 
 const initialState = {
   selected: 'shibes',
+  loading: false,
   shibes: {
     amountToLoad: 10,
     list: [],
@@ -26,13 +28,13 @@ const initialState = {
 function reducer(state, { type, payload }) {
   switch (type) {
     case TYPES.UPDATE_AMOUNT:
-      console.log('oi', payload);
       return {
         ...state,
         [payload.animal]: {
           ...state[payload.animal],
           amountToLoad: payload.amountToLoad,
-        }
+        },
+        loading: true,
       };
     case TYPES.UPDATE_LIST:
       return {
@@ -40,7 +42,8 @@ function reducer(state, { type, payload }) {
         [payload.animal]: {
           ...state[payload.animal],
           list: payload.list,
-        }
+        },
+        loading: false,
       };
     case TYPES.SELECTED:
       return {
