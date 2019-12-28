@@ -1,18 +1,26 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { useAnimals } from '../hooks';
+import React, { useEffect, useRef, useCallback, } from 'react';
+import { useAnimalsReducer, TYPES } from '../hooks/useAnimalsReducer';
 import styles from './app.module.css';
-import { AnimalCard, AnimalCounter } from '../components';
+import { AnimalCard, AnimalCounter, Dropdown } from '../components';
 
 function App() {
+  const [state, dispatch] = useAnimalsReducer();
+  const { selected } = state;
+  const { amountToLoad, list } = state[selected]
+
   const containerRef = useRef(null);
-  const [amountToLoad, setAmountToLoad] = useState(10);
-  const animals = useAnimals(amountToLoad);
 
   const memoedHandleScrollPositionChange = useCallback(() => {
     if (hasReachedBottom(containerRef)) {
-      setAmountToLoad(oldAmount => oldAmount + 10);
+      dispatch({
+        type: TYPES.UPDATE_AMOUNT,
+        payload: {
+          animal: selected,
+          amountToLoad: amountToLoad + 10,
+        }
+      })
     }
-  }, [containerRef]);
+  }, [containerRef, state]);
 
   const hasReachedBottom = ref => {
     return ref.current.getBoundingClientRect().bottom <= window.innerHeight;
@@ -25,26 +33,33 @@ function App() {
   }, [memoedHandleScrollPositionChange]);
 
   return (
-    <div
-      ref={containerRef}
-      className={styles.container}
-    >
+    <>
       <AnimalCounter count={amountToLoad} />
-      {
-        amountToLoad !== 0 ? (
-          animals.map((animal, i) => (
+      <div className={styles.container}>
+        <Dropdown
+          options={['shibes', 'birds', 'cats',]}
+          onChange={e => {
+            dispatch({
+              type: TYPES.SELECTED,
+              payload: e.target.value,
+            })
+          }}
+        />
+      </div>
+      <div
+        ref={containerRef}
+        className={styles.container}
+      >
+        {
+          list.map((animal, i) => (
             <AnimalCard
               key={i}
               animalImage={animal}
             />
           ))
-        ) : (
-          <h2>
-            loading
-          </h2>
-        )
-      }
-    </div>
+        }
+      </div>
+    </>
   );
 }
 

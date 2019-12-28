@@ -1,1 +1,1 @@
-export * from './useAnimals';
+export * from './useAnimalsReducer';
